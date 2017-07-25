@@ -2,6 +2,9 @@ version: '3'
 services:
   www:
     build: .
+    tty: true
+    stdin_open: true
+    command: "php -S 0.0.0.0:8087 -t /var/www/"
     ports:
       - "8087:8087"
     volumes:
