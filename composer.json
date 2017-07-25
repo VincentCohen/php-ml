@@ -1,0 +1,15 @@
+{
+  "name": "vincentcohen/php-ml",
+  "description": "Examples of the use of PHP-ML library",
+  "keywords": ["machine learning","php"],
+  "homepage": "https://github.com/vincentcohen",
+  "authors": [
+    {
+      "name": "Vincent Cohen",
+      "email": "ikben@vincentcohen.nl"
+    }
+  ],
+  "require": {
+    "php-ai/php-ml": "dev-master"
+  }
+}
