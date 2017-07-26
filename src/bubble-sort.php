@@ -1,40 +1,26 @@
-<pre>
 <?php
+function bubble_sort($list) {
+    $count = count($list);
 
-echo "Bubble sort - https://en.wikipedia.org/wiki/Bubble_sort";
+    do {
+        $sorted = false;
 
-$list = [6,4,7,8,5,2,1,9,3,0];
+        for ($current = 0;$current < $count; $current++) {
+            $next = $current + 1;
 
-var_dump ($list);
+            if ($list[$next] < $list[$current] && $next < $count) {   
+                $sorted = true;     
 
-function bubble_sort(array &$list)
-{
-    $changed = false;
-    for ($currentIndex = 0;$currentIndex < count($list); $currentIndex++)
-    {
-        $nextIndex = $currentIndex < (count($list) -1) ? $currentIndex + 1 : $currentIndex;
-
-        $current = $list[$currentIndex];
-        $next = $list[$nextIndex];
-        
-        if ($next < $current)
-        {   
-            $changed = true;     
-            $list[$currentIndex] = $next;
-            $list[$nextIndex] = $current;
+                list($list[$current], $list[$next]) = [$list[$next], $list[$current]];
+            }
         }
-    }
 
-    if ($changed)
-    {
-        bubble_sort($list, $changed);
-    }
+    } while ($sorted);
 
     return $list;
 }
 
-$list = bubble_sort($list);
+$list = bubble_sort([3,2,1,4,7,6]);
 
+echo "<pre>";
 var_dump ($list);
-
-echo "--END--";
