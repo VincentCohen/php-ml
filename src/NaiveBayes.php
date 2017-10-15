@@ -65,7 +65,6 @@ class NaiveBayes
         $scores = [];
         $totalDocuments = 0;
 
-
         for ($i = 0; $i < count($this->labels); $i++) {
             $label = $this->labels[$i];
             $totalDocuments += $this->documentsPerLabel[$label];
@@ -73,6 +72,7 @@ class NaiveBayes
 
         for ($i = 0; $i < count($this->labels); $i++)
         {
+            $label = $this->labels[$i];
             if (!isset($totalDocumentsNotInLabel[$label])) {
                 $totalDocumentsNotInLabel[$label] = 0;
             }
