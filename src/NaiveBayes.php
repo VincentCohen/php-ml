@@ -1,9 +1,5 @@
 <?php
-
-
 namespace phpML;
-
-
 
 /**
  * Class NaiveBayes
@@ -45,11 +41,10 @@ class NaiveBayes
     {
         $this->addLabel($label);
 
-        // Cleanup the sentance
+        // Cleanup the sentence
         $words = $this->tokenize($text);
 
-        foreach ($words as $word)
-        {
+        foreach ($words as $word) {
             $this->updateWordsPerLabel($word, $label);
             $this->updateTotalWordUsage($word);
         }
@@ -59,6 +54,7 @@ class NaiveBayes
 
     /**
      * @param $text
+     *
      * @return array
      */
     public function guess($text)
@@ -70,16 +66,14 @@ class NaiveBayes
         $totalDocuments = 0;
 
 
-        for ($i = 0; $i < count($this->labels); $i++)
-        {
+        for ($i = 0; $i < count($this->labels); $i++) {
             $label = $this->labels[$i];
             $totalDocuments += $this->documentsPerLabel[$label];
         }
 
         for ($i = 0; $i < count($this->labels); $i++)
         {
-            if (!isset($totalDocumentsNotInLabel[$label]))
-            {
+            if (!isset($totalDocumentsNotInLabel[$label])) {
                 $totalDocumentsNotInLabel[$label] = 0;
             }
 
@@ -87,20 +81,17 @@ class NaiveBayes
         }
 
 
-        for ($i = 0; $i < count($this->labels); $i++)
-        {
+        for ($i = 0; $i < count($this->labels); $i++) {
             $label = $this->labels[$i];
             $logSum = 0;
 
             $labelProbability[$label] = $this->documentsPerLabel[$label] / $totalDocuments;
 
-            for ($j = 0; $j < count($words); $j++)
-            {
+            for ($j = 0; $j < count($words); $j++) {
                 $word = $words[$j];
                 $totalWordUsage = $this->totalWordUsage[$word];
 
-                if (!$totalWordUsage)
-                {
+                if (!$totalWordUsage) {
                     continue;
                 }
 
@@ -110,13 +101,11 @@ class NaiveBayes
 
                 $wordicity = (( 1 * 0.5) + ($totalWordUsage * $wordicity) ) / (1 + $totalWordUsage);
 
-                if ($wordicity === 0)
-                {
+                if ($wordicity === 0) {
                     $wordicity = 0.01;
                 }
 
-                if ($wordicity == 1)
-                {
+                if ($wordicity == 1) {
                     $wordicity = 99.99;
                 }
 
@@ -131,12 +120,12 @@ class NaiveBayes
 
     /**
      * @param $label
+     *
      * @return array
      */
     protected function addLabel($label)
     {
-        if (!isset($this->labels[$label]))
-        {
+        if (!isset($this->labels[$label])) {
             $this->labels[] = $label;
         }
 
@@ -146,27 +135,28 @@ class NaiveBayes
     /**
      * Returns a list of words
      *
+     * @param $str
+     *
      * @return array
      */
-    protected function tokenize($text)
+    protected function tokenize($str)
     {
-        return array_unique(explode(' ', strtolower($text)));
+        return array_unique(explode(' ', strtolower($str)));
     }
 
     /**
      * @param $word
      * @param $label
+     *
      * @return $this
      */
     protected function updateWordsPerLabel($word, $label)
     {
-        if (!isset($this->wordsPerLabel[$label]))
-        {
+        if (!isset($this->wordsPerLabel[$label])) {
             $this->wordsPerLabel[$label] = [];
         }
 
-        if (!isset($this->wordsPerLabel[$label][$word]))
-        {
+        if (!isset($this->wordsPerLabel[$label][$word])) {
             $this->wordsPerLabel[$label][$word] = 0;
         }
 
@@ -180,8 +170,7 @@ class NaiveBayes
      */
     private function updateDocumentsPerLabel($label)
     {
-        if (!isset($this->documentsPerLabel[$label]))
-        {
+        if (!isset($this->documentsPerLabel[$label])) {
             $this->documentsPerLabel[$label] = 0;
         }
 
@@ -193,30 +182,39 @@ class NaiveBayes
      */
     private function updateTotalWordUsage($word)
     {
-        if (!isset($this->totalWordUsage[$word]))
-        {
+        if (!isset($this->totalWordUsage[$word])) {
             $this->totalWordUsage[$word] = 0;
         }
 
         $this->totalWordUsage[$word]++;
     }
 
-
+    /**
+     * @param $word
+     * @param $label
+     *
+     * @return int
+     */
     private function getWordUsageInLabel($word, $label)
     {
         return (isset($this->wordsPerLabel[$label][$word]) ? $this->wordsPerLabel[$label][$word] : 0);
     }
 
+    /**
+     * @param $word
+     * @param $label
+     *
+     * @return int
+     */
     private function getInverseWordUsage($word, $label)
     {
         $labels = $this->labels;
-        $total = 0;
-        for ($i = 0; $i < count($labels); $i++)
-        {
-            if ($labels[$i] == $label)
-            {
+        $total  = 0;
+        for ($i = 0; $i < count($labels); $i++) {
+            if ($labels[$i] == $label) {
                 continue;
             }
+
             $total += $this->getWordUsageInLabel($word, $labels[$i]);
         }
 
