@@ -83,7 +83,7 @@ class NaiveBayes
 
         for ($i = 0; $i < count($this->labels); $i++) {
             $label = $this->labels[$i];
-            $logSum = 0;
+            $combinedProbability = 0;
 
             $labelProbability[$label] = $this->documentsPerLabel[$label] / $totalDocuments;
 
@@ -97,22 +97,22 @@ class NaiveBayes
 
                 $wordProbability = $this->getWordUsageInLabel($word, $label) / $this->documentsPerLabel[$label];
                 $wordInverseProbability = $this->getInverseWordUsage($word, $label);
-                $wordicity = $wordProbability / ($wordProbability + $wordInverseProbability);
+                $probabilityToLabel = $wordProbability / ($wordProbability + $wordInverseProbability);
 
-                $wordicity = (( 1 * 0.5) + ($totalWordUsage * $wordicity) ) / (1 + $totalWordUsage);
+                $probabilityToLabel = (( 1 * 0.5) + ($totalWordUsage * $probabilityToLabel) ) / (1 + $totalWordUsage);
 
-                if ($wordicity === 0) {
-                    $wordicity = 0.01;
+                if ($probabilityToLabel === 0) {
+                    $probabilityToLabel = 0.01;
                 }
 
-                if ($wordicity == 1) {
-                    $wordicity = 99.99;
+                if ($probabilityToLabel == 1) {
+                    $probabilityToLabel = 99.99;
                 }
 
-                $logSum += (log(1 - $wordicity) - log($wordicity));
+                $combinedProbability += (log(1 - $probabilityToLabel) - log($probabilityToLabel));
             }
 
-            $scores[$label] = 1 / ( 1 + exp($logSum) );
+            $scores[$label] = 1 / ( 1 + exp($combinedProbability) );
         }
 
         return $scores;
@@ -217,7 +217,6 @@ class NaiveBayes
 
             $total += $this->getWordUsageInLabel($word, $labels[$i]);
         }
-
 
         return $total;
     }
