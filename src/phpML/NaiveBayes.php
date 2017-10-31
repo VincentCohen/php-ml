@@ -124,10 +124,15 @@ class NaiveBayes
      */
     protected function addLabel($label)
     {
-        if (!isset($this->labels[$label])) {
+        if (!in_array($label, $this->labels)) {
             $this->labels[] = $label;
         }
 
+        return $this->labels;
+    }
+
+    public function getLabels()
+    {
         return $this->labels;
     }
 
