@@ -94,11 +94,13 @@ class NaiveBayes
                     continue;
                 }
 
-                $wordProbability = $this->getWordUsageInLabel($word, $label) / $this->documentsPerLabel[$label];
+                $wordProbability = $this->getWordUsageInLabel($word, $label) / $this->documentsPerLabel[$label]; 
                 $wordInverseProbability = $this->getInverseWordUsage($word, $label);
                 $probabilityToLabel = $wordProbability / ($wordProbability + $wordInverseProbability);
 
-                $probabilityToLabel = (( 1 * 0.5) + ($totalWordUsage * $probabilityToLabel) ) / (1 + $totalWordUsage);
+                $uniqueWordWeight = 1; // Depends on data set, set higher for higher amount of data
+                $probabilityToLabel = (($uniqueWordWeight * 0.5) + ($totalWordUsage * $probabilityToLabel)) 
+                    / ($uniqueWordWeight + $totalWordUsage);
 
                 if ($probabilityToLabel === 0) {
                     $probabilityToLabel = 0.01;

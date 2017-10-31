@@ -1,5 +1,4 @@
 <?php
-set_time_limit(60);
 include("phpML/NaiveBayes.php");
 
 use phpML\NaiveBayes;
@@ -7,7 +6,7 @@ use phpML\NaiveBayes;
 $nb = new NaiveBayes();
 echo "<pre>";
 $i = 0;
-$products = array_map('str_getcsv', file('./dataset/products_small.csv'));
+$products = array_map('str_getcsv', file('./dataset/products.csv'));
 foreach ($products as $product)
 {
     $title = $product[0];
@@ -18,7 +17,6 @@ foreach ($products as $product)
     $nb->train($category, $title);
 }
 
-var_dump($nb->getLabels());
 ?>
 <html>
     <head>
